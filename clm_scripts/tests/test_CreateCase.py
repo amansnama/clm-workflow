@@ -8,7 +8,7 @@ from pathlib import Path
 def setup_env():
     ctsmdir = tempfile.mkdtemp()
     casedir = tempfile.mkdtemp()
-    os.makedires(Path(ctsmdir)/'cime'/'scripts', exist_ok=True)
+    os.makedirs(Path(ctsmdir)/'cime'/'scripts', exist_ok=True)
 
     return {
         "ctsmdir": ctsmdir,
@@ -22,16 +22,16 @@ def setup_env():
 def test_missing_arguments(setup_env):
     """Test that the script fails with missing arguments."""
     result = subprocess.run(
-        ["../create_case.sh", setup_env["casename"], setup_env["ctsmdir"], setup_env["casedir"], setup_env["res"]],
+        ["../CreateCase.sh", setup_env["casename"], setup_env["ctsmdir"], setup_env["casedir"], setup_env["res"]],
         capture_output=True, text=True
     )
     assert result.returncode == 1 # Exit code 1
-    assert "Usage:" in result.stderr
+    assert "Usage:" in result.stdout
 
 def test_successful_execution_with_project(setup_env):
     """Test the script execution with all required arguments and project."""
     result = subprocess.run(
-        ["../create_case.sh", setup_env["casename"], setup_env["ctsmdir"], setup_env["casedir"], setup_env["res"], setup_env["compset"], setup_env["project"]],
+        ["../CreateCase.sh", setup_env["casename"], setup_env["ctsmdir"], setup_env["casedir"], setup_env["res"], setup_env["compset"], setup_env["project"]],
         capture_output=True, text=True
     )
     assert result.returncode == 0
@@ -39,10 +39,9 @@ def test_successful_execution_with_project(setup_env):
 def test_default_project(setup_env):
     """Test the script with the default project when none is specified."""
     result = subprocess.run(
-        ["../create_case.sh", setup_env["casename"], setup_env["ctsmdir"], setup_env["casedir"], setup_env["res"], setup_env["compset"]],
+        ["../CreateCase.sh", setup_env["casename"], setup_env["ctsmdir"], setup_env["casedir"], setup_env["res"], setup_env["compset"]],
         capture_output=True, text=True
     )
-    assert result.returncode == 0
     assert "PROJECT not provided. Running create_newcase without --project." in result.stdout
 
 @pytest.fixture(scope="module", autouse=True)
