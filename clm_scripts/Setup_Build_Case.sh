@@ -1,10 +1,10 @@
 #!/bin/bash -e
 
 # Created on 2024/11/08 by Aman Shrestha
-# Setup CLM
+# Script to setup and build case
 
 if [ "$#" -lt 2 ]; then
-    echo "Usage: $0 <CASEROOT> --setup --build --xml"
+    echo "Usage: $0 <CASEROOT> --setup --build"
     exit 1
 fi
 
@@ -13,13 +13,11 @@ CASEROOT=$1     # Directory of current case
 # Initialize flags to false
 setup=false
 build=false
-xml=false
 
 for arg in "${@:2}"; do
     case $arg in
         --setup) setup=true ;; # Flag to run setup
         --build) build=true ;; # Flag to run build
-        --xml) xml=true ;; # Flag to change xmls
         *) 
             echo "Unexpected flag: $arg"
             exit 2 ;;
@@ -30,7 +28,6 @@ done
 echo "CASEROOT: $CASEROOT"
 echo "Setup: $setup"
 echo "Build: $build"
-echo "XML: $xml"
 
 SCRIPTDIR=$(pwd) # Dir with clm scripts
 
@@ -47,17 +44,13 @@ hostname_value=$(hostname)
 # Run case build
 if [ $build = true ]; then
     if [[ $hostname_value == "derecho"* ]]; then
-        qcmd ./case.build
+        echo "Building in" $hostname_value
+        qcmd -A $PRJ ./case.build
+        # PRJ is an environmental variable
     else
         ./case.build
     fi
     echo "Case build successfull!"
 fi
 
-# Change XML
-if [ $xml = true ]; then
-    # Change directory back to clm-workflow/clm_scripts
-    cd $SCRIPTDIR
-    python run_xmlchange.py $CASEROOT xmlconfig.cfg
-    echo "XML Changed!"
-fi
+exit 0

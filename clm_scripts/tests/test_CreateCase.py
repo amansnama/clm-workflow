@@ -65,7 +65,7 @@ def test_successful_execution_with_project(setup_env):
         capture_output=True,
         text=True,
     )
-    assert result.returncode == 2
+    assert result.returncode == 0
 
 
 def test_default_project(setup_env):
@@ -95,7 +95,7 @@ def test_default_project(setup_env):
         assert result.returncode == 1
     else:
         # In other machine not requiring PROJECT.
-        assert result.returncode == 3
+        assert result.returncode == 0
 
 
 @pytest.fixture(scope="module", autouse=True)

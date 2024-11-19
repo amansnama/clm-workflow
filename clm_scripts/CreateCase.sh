@@ -22,9 +22,8 @@ cd ${CTSMDIR}/cime/scripts
 if [ -n "${6-}" ]; then
     PROJECT="$6"        # Project to bill core-hours.
     ./create_newcase --case ${CASEDIR}/${CASENAME} --compset ${COMPSET} --res ${RES} --project ${PROJECT} --run-unsupported
-    exit 2
 else
     echo "PROJECT not provided. Running create_newcase without --project."
     ./create_newcase --case ${CASEDIR}/${CASENAME} --compset ${COMPSET} --res ${RES} --run-unsupported
-    exit 3
 fi
+exit 0
