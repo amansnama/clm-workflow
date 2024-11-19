@@ -2,9 +2,10 @@
 
 # Created on 2024/11/08 by Aman Shrestha
 # Creates new CLM case
+# PROJECT needed for derecho, not for HPCC
 
-# Checks for atleast arguments
-if [ "$#" -lt 6 ]; then
+# Checks for atleast 5 arguments
+if [ "$#" -lt 5 ]; then
     echo "Usage: $0 <CASENAME> <CTSMDIR> <CASEDIR> <RES> <COMPSET> [PROJECT]"
     exit 1
 fi
@@ -21,7 +22,9 @@ cd ${CTSMDIR}/cime/scripts
 if [ -n "${6-}" ]; then
     PROJECT="$6"        # Project to bill core-hours.
     ./create_newcase --case ${CASEDIR}/${CASENAME} --compset ${COMPSET} --res ${RES} --project ${PROJECT} --run-unsupported
+    exit 2
 else
     echo "PROJECT not provided. Running create_newcase without --project."
     ./create_newcase --case ${CASEDIR}/${CASENAME} --compset ${COMPSET} --res ${RES} --run-unsupported
+    exit 3
 fi
