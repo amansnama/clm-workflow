@@ -29,14 +29,17 @@ echo "CASEROOT: $CASEROOT"
 echo "Setup: $setup"
 echo "Build: $build"
 
-SCRIPTDIR=$(pwd) # Dir with clm scripts
-
 cd $CASEROOT
 
 # Run case setup
 if [ $setup = true ]; then
-    ./case.setup
-    echo "Case setup successfull!"
+    if [ -f "./case.setup" ]; then
+        ./case.setup
+        echo "Case setup successfull!"
+    else
+        echo "./case.setup does not exist."
+        exit 3
+    fi
 fi
 
 # Find machine name

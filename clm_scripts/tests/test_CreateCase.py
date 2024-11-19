@@ -8,11 +8,18 @@ import shutil
 # Path to clm-workflow/clm_scripts directed back from the test dir
 CLMSCRIPTSDIR = Path(__file__).parent.parent
 
+HOSTNAME = subprocess.run(["hostname"], capture_output=True, text=True).stdout.strip()
+
 
 @pytest.fixture(scope="module")
 def setup_env():
-    # ctsmdir = tempfile.mkdtemp()
-    ctsmdir = r"/glade/u/home/amans/ctsm5.2.mksurfdat"  # For test in derecho
+    if "derecho" in HOSTNAME:
+        ctsmdir = r"/glade/u/home/amans/ctsm5.2.mksurfdat"  # For test in derecho
+    else:
+        # In other machines, create temp ctsmdir
+        ctsmdir = tempfile.mkdtemp() # Could specify path to ctsm
+        # Create mock create_newcase
+        # (ctsmdir / "create_newcase").write_text("#!/bin/bash\necho 'Mock newcase executed!'\nexit 0\n")
     casedir = tempfile.mkdtemp()
     os.makedirs(Path(ctsmdir) / "cime" / "scripts", exist_ok=True)
 
@@ -86,10 +93,7 @@ def test_default_project(setup_env):
         "PROJECT not provided. Running create_newcase without --project."
         in result.stdout
     )
-    # Should return code 3 in machines not requiring PROJECT
-    hostname = subprocess.run(["hostname"], capture_output=True, text=True)
-
-    if "derecho" in hostname.stdout.strip():
+    if "derecho" in HOSTNAME:
         # In derecho, PROJECT is always needed.
         # ./create_case fails with returncode 1
         assert result.returncode == 1
