@@ -22,14 +22,25 @@ CASEDIR = var_dict.get("CASEDIR")
 RES = var_dict.get("RES")
 COMPSET = var_dict.get("COMPSET")
 XMLCONFIG = var_dict.get("XMLCONFIG")
+ARCHIVE = var_dict.get("ARCHIVE")
 
 CASEROOT=f"{CASEDIR}/{CASENAME}"
-
-# def 
+OUTROOT=f"{ARCHIVE}/{CASENAME}"
 
 rule all:
     input:
-        f"{CASEROOT}/case.submit"
+        OUTROOT
+
+rule case_run_submit:
+    input:
+        CASEROOT + '/case.submit'
+    output:
+        OUTROOT
+    shell:
+        """
+        cd {CASEROOT}
+        ./case.submit
+        """
 
 rule build:
     input:
@@ -46,8 +57,9 @@ rule setup:
         CASEROOT + '/case.build'
     shell:
         """
-        ./clm_scripts/XMLCase.sh {CASEROOT} {XMLCONFIG}
-        ./clm_scripts/Setup_Build_Case.sh {CASEROOT} --setup
+        cd clm_scripts
+        ./XMLCase.sh {CASEROOT} {XMLCONFIG}
+        ./Setup_Build_Case.sh {CASEROOT} --setup
         """
 
 rule newcase:
@@ -56,4 +68,10 @@ rule newcase:
     output:
         CASEROOT + '/case.setup'
     shell:
-        "./clm_scripts/CreateCase.sh {CASENAME} {CTSMDIR} {CASEDIR} {RES} {COMPSET}"
+        """
+        if [ -d "{CASEROOT}" ]; then
+            echo "Removing existing case directory {CASEROOT}"
+            rm -rf "{CASEROOT}"
+        fi
+        ./clm_scripts/CreateCase.sh {CASENAME} {CTSMDIR} {CASEDIR} {RES} {COMPSET} $PRJ
+        """
