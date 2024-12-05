@@ -1,0 +1,12 @@
+site_name: clm-workflow
+site_url: https://amansnama.github.io/clm-workflow/
+
+theme:
+  name: "material"
+
+plugins:
+  - search
+  - mkdocstrings
+
+nav:
+  - Home: index.md

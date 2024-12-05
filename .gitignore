@@ -16,7 +16,7 @@ ipython_config.py
 .venv
 
 # mkdocs documentation
-/site
+**/site/
 
 # snakemake file
 .snakemake
