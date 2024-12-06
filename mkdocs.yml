@@ -15,6 +15,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Tutorial: ./tutorial/index.md
   - Workflow Reference:
     - Overview: ./reference/index.md
     - Workflow Design: ./reference/design.md

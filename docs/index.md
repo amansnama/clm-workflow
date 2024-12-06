@@ -1,15 +1,20 @@
-# clm-workflow
+# Welcome to the clm-workflow documentation
 
-Automate the steps to run Community Land Model version 5 (CLM5) hosted at [CTSM](https://github.com/ESCOMP/CTSM).
-Also, automate CLM output analysis if you want it to. :)
+**clm-workflow** automates the steps to run Community Land Model version 5 (CLM5) hosted at [CTSM](https://github.com/ESCOMP/CTSM).It also automates CLM output analysis, if you want it to. :)
 
 ## Documentation structure
 
-1. Workflow Tutorial
+1. [Workflow Tutorial](tutorial/index.md)
 2. Workflow User's Guide
 3. [Workflow Reference](reference/index.md)
 
 ## Workflow Components
 
-1. Automate CLM
-2. Automate analysis
+The workflow contains two main components:
+
+1. CLM simulation automation
+2. Analysis automation
+
+## Getting help
+
+Please contact [me](https://github.com/amansnama) at [shrest66@msu.edu](shrest66@msu.edu) with any issues regarding **clm-workflow**.
