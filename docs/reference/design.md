@@ -17,5 +17,5 @@ The goal of this workflow is to automate the bazillion steps of running CLM simu
 ## Algorithm or pseudocode of the main workflow components
 
 ```
-[Pseudocode](pseudocode.txt)
+{!pseudocode.txt!}
 ```

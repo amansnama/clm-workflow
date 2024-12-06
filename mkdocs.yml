@@ -8,5 +8,14 @@ plugins:
   - search
   - mkdocstrings
 
+markdown_extensions:
+  - markdown_include.include:
+      base_path: .  
+      # base path . is the current dir of whichever file calls markdown_include
+
 nav:
   - Home: index.md
+  - Workflow Reference:
+    - Overview: ./reference/index.md
+    - Workflow Design: ./reference/design.md
+    - Workflow DFD: ./reference/dfd.md
