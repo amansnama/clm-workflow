@@ -1,7 +1,10 @@
-name: build
+name: Build and deploy docs
 on:
   push:
     branches:
+      - main
+      - deploy-docs
+    pull_request:
       - main
 jobs:
   deploy:
