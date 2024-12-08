@@ -36,6 +36,22 @@ $ ./bin/git-fleximod update
 
 Please go through NCAR's [CTSM tutorial](https://github.com/NCAR/CTSM-Tutorial) for more information on runnning CTSM.
 
+### Installing snakemake 
+
+Follow the steps to install snakemake [here](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html.) 
+
+```
+$ conda create -c conda-forge -c bioconda -n snakemake snakemake
+```
+
+## clm-workflow Installation
+
+Clone the clm-workflow repo [https://github.com/amansnama/clm-workflow](https://github.com/amansnama/clm-workflow) to your machine.
+
+```
+$ git clone https://github.com/amansnama/clm-workflow
+```
+
 ## Workflow Tutorials
 
 - #### [CLM simulation workflow tutorial](clm-sim-tutorial.md)
