@@ -5,7 +5,7 @@
 ## Documentation structure
 
 1. [Workflow Tutorial](tutorial/index.md)
-2. Workflow User's Guide
+2. [Workflow User's Guide](user-guide/index.md)
 3. [Workflow Reference](reference/index.md)
 
 ## Workflow Components

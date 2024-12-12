@@ -10,33 +10,32 @@ This tutorial walks through the workflow to automate CLM simulations. Please ens
     - Submit the case run to a batch job queue.
 2. `clm-workflow` automates all of the above steps. We instruct the workflow how we want the CLM case to be created, configured, and ran. These settings are specified in two files: `caseconfig.cfg` and `xmlconfig.cfg` inside the directory clm_scripts.
 3. First, we will look inside `caseconfig.cfg`. It contains the variables `CASENAME, CTSMDIR, CASEDIR, RES, COMPSET, XMLCONFIG, and ARCHIVE`.
-    - `CASENAME`:
-    - `CTSMDIR`:
-    - `CASEDIR`:
-    - `RES`:
-    - `COMPSET`:
-    - `XMLCONFIG`:
-    - `ARCHIVE`:
-
-```
-CASENAME="name_to_identify_case",
-CTSMDIR="path_to_ctsm",
-CASEDIR="path_to_store_CASENAME",
-RES="CLM_grid_resolution",
-COMPSET="CLM_compset",
-XMLCONFIG="path_to_xmlconfig.cfg",
-ARCHIVE="path_to_CTSM_archive"
-```
+    - `CASENAME`: Name to identify the case. Can be anything.
+    - `CTSMDIR`: Location of CTSM installation.
+    - `CASEDIR`: Location to save new cases.
+    - `RES`: CLM simulation spatial resolution. Valid RES values can be queried by running `CTSMDIR/cime/scripts/query_config --res`.
+    - `COMPSET`: CLM component sets. Valid COMPSET can be queried by running `CTSMDIR/cime/scripts/query_config --compsets clm`.
+    - `XMLCONFIG`: Location of xmlconfig.cfg file. The xmlconfig.cfg contains CLM xml build and run configurations.
+    - `ARCHIVE`: Location to save CLM simulation outputs. The outputs may require a large storage space.
+    ```
+    CASENAME="name_to_identify_case",
+    CTSMDIR="path_to_ctsm",
+    CASEDIR="path_to_store_CASENAME",
+    RES="CLM_grid_resolution",
+    COMPSET="CLM_compset",
+    XMLCONFIG="path_to_xmlconfig.cfg",
+    ARCHIVE="path_to_CTSM_archive"
+    ```
 
 4. Derecho requires a mandatory project account to bill compute hour uses. Other machines might also require a project account. So, create an environment variable `PRJ` and store your project account in it. We will create `PRJ` in a `.profile` file in your home directory.
-```
-$ cd ~
-$ echo 'PRJ=YOUR_PROJECT_ACCOUNT;export PRJ'>>.profile
-```
-This will add `PRJ` to an environment variable after a new login. To make it available in the current login, run:
-```
-$ source ~/.profile
-```
+    ```
+    $ cd ~
+    $ echo 'PRJ=YOUR_PROJECT_ACCOUNT;export PRJ'>>.profile
+    ```
+    This will add `PRJ` to an environment variable after a new login. To make it available in the current login, run:
+    ```
+    $ source ~/.profile
+    ```
 
 5. `xmlconfig.cfg` contains xml configurations which define a CLM run. All possible xmls can be viewed by running `./xmlquery --listall`. It is best to always have xmlconfigs for `RUN_STARTDATE, STOP_N, and STOP_OPTION`. For this tutorial, we will run CLM for 5 days starting 2000-01-01 and let the maximume job wallclock of 30 minutes.
 ```

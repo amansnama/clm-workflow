@@ -55,5 +55,5 @@ $ git clone https://github.com/amansnama/clm-workflow
 ## Workflow Tutorials
 
 - #### [CLM simulation workflow tutorial](clm-sim-tutorial.md)
-- #### Analysis workflow tutorial
+- #### [Analysis workflow tutorial](clm-analysis.md)
 - #### Combined CLM-analysis workflow tutorial
