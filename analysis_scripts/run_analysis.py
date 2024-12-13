@@ -6,7 +6,7 @@ from nbconvert.preprocessors import ExecutePreprocessor
 from nbformat import read, write
 from nbformat.reader import NotJSONError
 from datetime import date
-
+from amanspylib.nclib.ncplotter import ensure_directory_exists
 
 # Read and parse the configuration file
 # Slightly different form read_config() in Snakefile
@@ -79,8 +79,11 @@ def main(run=True):
     # Execute each notebook iteratively
     for notebook in vars["BOOKS"]:
         # add date to executed file and save
+        savedir = os.path.join(vars["OUTDIR"], date.today().strftime("%y%m%d"))
+        ensure_directory_exists(savedir) # creates savedir if does not exist
+
         savepath = os.path.join(
-            vars["OUTDIR"] + date.today().strftime("%y%m%d") + "_" + notebook
+            savedir, date.today().strftime("%y%m%d") + "_" + notebook
         )
 
         if run:

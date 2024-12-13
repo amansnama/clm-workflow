@@ -1,0 +1,6 @@
+[submodule "analysis_scripts/hydrobooks"]
+	path = analysis_scripts/hydrobooks
+	url = git@github.com:amansnama/hydrobooks.git
+[submodule "analysis_scripts/amanspylib"]
+	path = analysis_scripts/amanspylib
+	url = git@github.com:amansnama/amanspylib.git
