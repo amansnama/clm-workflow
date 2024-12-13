@@ -41,29 +41,29 @@ module Analyze_Plot(): # Module for analysis and visualization
 
 # Workflow start
 
-log in to machine1
+log in to machine
 
-define path/s to forcing_data
-define path/s to surface_data
+define xml_parameters
+define run_config
 
-for forcing in forcing_data:
-	for surface in surface_data:
-		CLM_executable = CLM_job.setup_CLM(forcing, surface)
-		for sim_time=[5days, 1year, nyear]:
-			if sim_time==5days:
-				job_wallclock_time=30min
-			else if sim_time==1year:
-				job_wallclock_time=6hr
-			else:
-				job_wallclock_time=12hr
-			config = CLM_job.prepare_config_files(sim_time, job_wallclock_time, other_parameters)
-			output_path = CLM_job.run_CLM(CLM_executable, config)
+CLM_executable = CLM_job.setup_CLM(forcing, surface)
+for sim_time=[5days, 1year, nyear]:
+	if sim_time==5days:
+		job_wallclock_time=30min
+	else if sim_time==1year:
+		job_wallclock_time=6hr
+	else:
+		job_wallclock_time=12hr
+	config = CLM_job.prepare_config_files(sim_time, job_wallclock_time, xml_parameters)
+	output_path = CLM_job.run_CLM(CLM_executable, run_config)
 
-
-log in to machine2
 
 # Download data from machine1 to machine2
-rsync -r machine1:output_path machine2:archive
+# This should be only done once.
+# rsync -r machine1:output_path machine2:archive
+
+# Pick what output variables to analyze
+define vars
 
 # Analyze and plot
 # needs a mapping table which points var to corresponding analyze function
