@@ -22,4 +22,4 @@ ipython_config.py
 .snakemake
 
 # Executed scripts in analysis_scripts
-analysis_scripts/executed_scripts/
+**/executed_scripts/

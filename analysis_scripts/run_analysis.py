@@ -2,6 +2,7 @@
 # 2024/12/13
 
 import os
+import shutil
 from nbconvert.preprocessors import ExecutePreprocessor
 from nbformat import read, write
 from nbformat.reader import NotJSONError
@@ -44,7 +45,7 @@ def read_config(file_path):
     return variables
 
 
-def execute_notebook(notebook_path, savepath):
+def execute_notebook(notebook_path):
     try:
         # Read the notebook
         with open(notebook_path, "r", encoding="utf-8") as f:
@@ -73,26 +74,46 @@ def execute_notebook(notebook_path, savepath):
 
 def main(run=True):
     dir_path = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(dir_path)
+
     vars = read_config(os.path.join(dir_path, "scripts_to_run.cfg"))
     print(vars)
 
+    # add date to executed file and save
+    savedir = os.path.join(vars["OUTDIR"], date.today().strftime("%y%m%d"))
+    ensure_directory_exists(savedir) # creates savedir if does not exist
+
+    # Hydrobooks needs a casename.txt file
+    with open(os.path.join(savedir, 'casename.txt'), "w") as file:
+        file.write(vars["CASENAME"])
+
     # Execute each notebook iteratively
     for notebook in vars["BOOKS"]:
-        # add date to executed file and save
-        savedir = os.path.join(vars["OUTDIR"], date.today().strftime("%y%m%d"))
-        ensure_directory_exists(savedir) # creates savedir if does not exist
-
+        
         savepath = os.path.join(
-            savedir, date.today().strftime("%y%m%d") + "_" + notebook
+            savedir, date.today().strftime("%y%m%d") + "_" + os.path.basename(notebook)
         )
-
+        print(savepath)
         if run:
-            execute_notebook(
-                os.path.join(vars["HYDROBOOKSDIR"], notebook), savepath
+            # Copy the notebook to savepath to prevent overwriting
+            try:
+                source = os.path.join(vars['HYDROBOOKSDIR'], notebook)
+                # Create parent dir if needed
+                # os.makedirs(os.path.dirname(savepath)) 
+                shutil.copy2(source, savepath)
+                print(f"File copied from {source} to {savepath}")
+            except FileNotFoundError as err:
+                print(err)
+            except PermissionError:
+                print(f"Permission denied: Unable to copy to {savepath}")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+            execute_notebook(savepath
             )
 
     print("All notebooks executed successfully.")
 
 
 if __name__ == "__main__":
-    main(run=False)
+    main(run=True)
