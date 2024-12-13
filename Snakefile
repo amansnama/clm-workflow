@@ -27,9 +27,17 @@ ARCHIVE = var_dict.get("ARCHIVE")
 CASEROOT=f"{CASEDIR}/{CASENAME}"
 OUTROOT=f"{ARCHIVE}/{CASENAME}"
 
+EMAIL = "shrest66@msu.edu"
+
 rule all:
     input:
         OUTROOT
+        
+    onsuccess:
+        shell("mail -s 'Snakemake DONE {CASENAME}' {EMAIL} < {log}")
+
+    onerror:
+        shell("mail -s 'Snakemake ERROR {CASENAME}' {EMAIL} < {log}")
 
 rule case_run_submit:
     input:
