@@ -4,8 +4,13 @@ on:
     branches:
       - main
       - deploy-docs
-    pull_request:
+    paths:
+      - docs/**
+  pull_request:
+    branches:
       - main
+    paths:
+      - docs/**
 jobs:
   deploy:
     runs-on: ubuntu-latest
