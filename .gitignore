@@ -20,3 +20,6 @@ ipython_config.py
 
 # snakemake file
 .snakemake
+
+# Executed scripts in analysis_scripts
+**/executed_scripts/
