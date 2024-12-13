@@ -2,6 +2,8 @@
 
 **clm-workflow** automates the steps to run Community Land Model version 5 (CLM5) hosted at [CTSM](https://github.com/ESCOMP/CTSM).It also automates CLM output analysis, if you want it to. :)
 
+> **NOTE**: The first part of the workflow is complete and works. The second part (CLM analysis) is under preparation.
+
 ## Documentation structure
 
 1. [Workflow Tutorial](tutorial/index.md)
@@ -14,6 +16,8 @@ The workflow contains two main components:
 
 1. CLM simulation automation
 2. Analysis automation
+
+    > **NOTE**: This workflow is still in development. The scripts for analysis are available in the repo, but they have not been implemented in Snakemake. The documentation is also in development.
 
 ## Getting help
 

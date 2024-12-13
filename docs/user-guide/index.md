@@ -10,3 +10,4 @@ The user guide is structured into these sections:
     - [Install CTSM](./how-to/install-ctsm.md)
     - [Download input data for CTSM simulation](./how-to/download-input.md)
     - [Set up CTSM in non-NCAR machine](./how-to/CTSM-setup-nonNCARmachine.md)
+    - [Setup conda environment](./how-to/create-conda-env.md)

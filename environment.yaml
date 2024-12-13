@@ -1,0 +1,30 @@
+name: clm-workflow-env
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10 
+  - snakemake  # Snakemake for workflow management
+  - mailutils  # For sending email notifications
+  - yaml
+  - coreutils
+  - bash
+  - numpy
+  - matplotlib
+  - rasterio
+  - basemap
+  - pandas
+  - geopandas
+  - seaborn
+  - netCDF4
+  - xarray
+  - hydroeval
+  - cartopy
+
+# Optional dependencies for enhanced functionality
+  - pip
+
+# pip dependencies
+  - pip:
+      - mpl_toolkits  # For additional Matplotlib tools

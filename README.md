@@ -7,3 +7,7 @@ The documentation is hosted on [https://amansnama.github.io/clm-workflow/](https
 Make an environment variable `PRJ` and store your PROJECT_ACCOUNT.
 This can be done by adding this to your .profile or .bash_profile.
 ```PRJ=<PROJECT_ACCOUNT>;export PRJ```
+
+## Project status
+
+The workflow to run CLM cases is running, with Snakemake integration and decent documentation. The second part of the workflow (analysis) is under development.
