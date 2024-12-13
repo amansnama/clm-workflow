@@ -1,0 +1,76 @@
+# Created on 2024/09/10 by Aman Shrestha
+
+# Pseudocode
+
+#---------------------------------------------------------------------
+module CLM_job: # Module for CLM part of workflow
+	function setup_CLM(forcing, surface, src_files, build_settings):
+		build CLM
+		if build fails:
+			exit
+		else:
+			print Build successful
+			return CLM_executable		
+
+	function prepare_config_files(par1, par2, par3,...):
+		set configurations for each parameter
+		return config
+
+	function run_CLM(CLM executable, config):
+		submit job to batch system
+		if run fails:
+			print Run fail
+			exit
+		else:
+			print Run successful with config
+			store outputs
+			return path_to_output
+
+
+module Analyze_Plot(): # Module for analysis and visualization
+	function streamflow(model, obs):
+		calculate metrics using python packages
+		plot model vs obs streamflow hydrographs
+		plot metrics spatial distribution map
+		plot box and whisker plot of metric
+
+	# need to add more functions for other variables.
+	# They look similar to the streamflow function above.		
+		
+#---------------------------------------------------------------------
+
+# Workflow start
+
+log in to machine
+
+define xml_parameters
+define run_config
+
+CLM_executable = CLM_job.setup_CLM(forcing, surface)
+for sim_time=[5days, 1year, nyear]:
+	if sim_time==5days:
+		job_wallclock_time=30min
+	else if sim_time==1year:
+		job_wallclock_time=6hr
+	else:
+		job_wallclock_time=12hr
+	config = CLM_job.prepare_config_files(sim_time, job_wallclock_time, xml_parameters)
+	output_path = CLM_job.run_CLM(CLM_executable, run_config)
+
+
+# Download data from machine1 to machine2
+# This should be only done once.
+# rsync -r machine1:output_path machine2:archive
+
+# Pick what output variables to analyze
+define vars
+
+# Analyze and plot
+# needs a mapping table which points var to corresponding analyze function
+for vars in vars_to_analyze: 
+	Analyze_Plot.streamflow(archive, observation_dataset)
+	# Analyze_Plot.function2 and so on...
+
+notify user when it finishes
+
+# Workflow end

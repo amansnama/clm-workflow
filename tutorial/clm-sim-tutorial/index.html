@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://amansnama.github.io/clm-workflow/tutorial/clm-sim-tutorial/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>CLM simulation workflow tutorial - clm-workflow</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "CLM simulation workflow tutorial";
+        var mkdocs_page_input_path = "tutorial/clm-sim-tutorial.md";
+        var mkdocs_page_url = "/clm-workflow/tutorial/clm-sim-tutorial/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> clm-workflow
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../">Tutorial</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../user-guide/">User Guide</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Workflow Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/design/">Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/dfd/">Workflow DFD</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">clm-workflow</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">CLM simulation workflow tutorial</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="clm-simulation-workflow-tutorial">CLM simulation workflow tutorial</h1>
+<p>This tutorial walks through the workflow to automate CLM simulations. Please ensure that CTSM is installed. The path where we installed CTSM is called <code>CTSMDIR</code>, throughout the tutorial and by <code>clm-workflow</code>.</p>
+<ol>
+<li>CLM simulations are called cases. The manual way to create and run a CLM case would be to:<ul>
+<li>Create new case.</li>
+<li>Run case setup.</li>
+<li>Configure the settings that the CLM case will run on.</li>
+<li>Build the case.</li>
+<li>Submit the case run to a batch job queue.</li>
+</ul>
+</li>
+<li><code>clm-workflow</code> automates all of the above steps. We instruct the workflow how we want the CLM case to be created, configured, and ran. These settings are specified in two files: <code>caseconfig.cfg</code> and <code>xmlconfig.cfg</code> inside the directory clm_scripts.</li>
+<li>
+<p>First, we will look inside <code>caseconfig.cfg</code>. It contains the variables <code>CASENAME, CTSMDIR, CASEDIR, RES, COMPSET, XMLCONFIG, and ARCHIVE</code>.</p>
+<ul>
+<li><code>CASENAME</code>: Name to identify the case. Can be anything.</li>
+<li><code>CTSMDIR</code>: Location of CTSM installation.</li>
+<li><code>CASEDIR</code>: Location to save new cases.</li>
+<li><code>RES</code>: CLM simulation spatial resolution. Valid RES values can be queried by running <code>CTSMDIR/cime/scripts/query_config --res</code>.</li>
+<li><code>COMPSET</code>: CLM component sets. Valid COMPSET can be queried by running <code>CTSMDIR/cime/scripts/query_config --compsets clm</code>.</li>
+<li><code>XMLCONFIG</code>: Location of xmlconfig.cfg file. The xmlconfig.cfg contains CLM xml build and run configurations.</li>
+<li><code>ARCHIVE</code>: Location to save CLM simulation outputs. The outputs may require a large storage space.
+<code>CASENAME="name_to_identify_case",
+CTSMDIR="path_to_ctsm",
+CASEDIR="path_to_store_CASENAME",
+RES="CLM_grid_resolution",
+COMPSET="CLM_compset",
+XMLCONFIG="path_to_xmlconfig.cfg",
+ARCHIVE="path_to_CTSM_archive"</code></li>
+</ul>
+</li>
+<li>
+<p>Derecho requires a mandatory project account to bill compute hour uses. Other machines might also require a project account. So, create an environment variable <code>PRJ</code> and store your project account in it. We will create <code>PRJ</code> in a <code>.profile</code> file in your home directory.
+    <code>$ cd ~
+    $ echo 'PRJ=YOUR_PROJECT_ACCOUNT;export PRJ'&gt;&gt;.profile</code>
+    This will add <code>PRJ</code> to an environment variable after a new login. To make it available in the current login, run:
+    <code>$ source ~/.profile</code></p>
+</li>
+<li>
+<p><code>xmlconfig.cfg</code> contains xml configurations which define a CLM run. All possible xmls can be viewed by running <code>./xmlquery --listall</code>. It is best to always have xmlconfigs for <code>RUN_STARTDATE, STOP_N, and STOP_OPTION</code>. For this tutorial, we will run CLM for 5 days starting 2000-01-01 and let the maximume job wallclock of 30 minutes.</p>
+</li>
+</ol>
+<pre><code>RUN_STARTDATE=2000-01-01
+STOP_N=5
+STOP_OPTION=ndays
+JOB_WALLCLOCK_TIME=00:30:00
+</code></pre>
+<ol>
+<li>Activate our snakemake environment. First, we will load conda module. Then activate our snakemake environment <code>snakemake_env</code>.</li>
+</ol>
+<pre><code>$ ml conda
+$ conda activate snakemake_env
+</code></pre>
+<ol>
+<li>We are all set up to run the workflow! Just type <code>snakemake</code> to run the workflow.</li>
+</ol>
+<pre><code>$ snakemake
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

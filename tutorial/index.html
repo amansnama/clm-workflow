@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://amansnama.github.io/clm-workflow/tutorial/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Tutorial - clm-workflow</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tutorial";
+        var mkdocs_page_input_path = "tutorial/index.md";
+        var mkdocs_page_url = "/clm-workflow/tutorial/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> clm-workflow
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Tutorial</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#tutorial-prerequisite">Tutorial Prerequisite</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#installing-ctsm">Installing CTSM</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#installing-snakemake">Installing snakemake</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#clm-workflow-installation">clm-workflow Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#workflow-tutorials">Workflow Tutorials</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#clm-simulation-workflow-tutorial">CLM simulation workflow tutorial</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#analysis-workflow-tutorial">Analysis workflow tutorial</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#combined-clm-analysis-workflow-tutorial">Combined CLM-analysis workflow tutorial</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../user-guide/">User Guide</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Workflow Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/design/">Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../reference/dfd/">Workflow DFD</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">clm-workflow</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Tutorial</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="overview">Overview</h1>
+<p>The tutorial is seperated into three options based on which part(s) of the workflow the user will be running. The tutorial assumes the user will be running the workflow in a NCAR machine, specifically <code>derecho</code>. The advantages of running in a NCAR machine in comparison to a local machine are:</p>
+<ol>
+<li>CLM simulations are computationally intensive and perform poorly in local machines or servers. NCAR hosts advanced supercomputing systems where they develop and test CLM.</li>
+<li>Inputs required to run CLM simulations occupy huge space. A 40 year simulation could require ~500GB of atmospheric forcing data. The memory requirements also increase exponentially with finer resolution.</li>
+</ol>
+<p>It is possible to run CLM in a non-NCAR machine; however, it requires major effort.</p>
+<h2 id="tutorial-prerequisite">Tutorial Prerequisite</h2>
+<h3 id="installing-ctsm">Installing CTSM</h3>
+<p>Installing CTSM (CTSM hosts CLM) is straightforward. Clone CTSM from their <a href="https://github.com/ESCOMP/CTSM">github repo</a>.</p>
+<pre><code>$ git clone https://github.com/ESCOMP/CTSM
+</code></pre>
+<p>By default, the clone command clones the latest commit from the master branch. The CTSM developers provide tags for incremental developments. To get a specific tag, say tag ctsm5.2.001, run:</p>
+<pre><code>$ git checkout ctsm5.2.001
+</code></pre>
+<p><code>clm-workflow</code> needs to be informed where CTSM is installed. The path to CTSM is provided to the variable <code>CTSMDIR</code> in <code>caseconfig.cfg</code>. Throughout these tutorials, <code>CTSMDIR</code> should be the path where you installed CTSM.</p>
+<p>CTSM is not fully installed yet. CTSM depends upon various dependencies which are linked to CTSM as git submodules. These can be installed by running</p>
+<pre><code># For ctsm&lt;5.2
+$ cd CTSMDIR
+$ ./manage_externals/checkout_externals
+
+# For ctsm&gt;5.2
+$ cd CTSMDIR
+$ ./bin/git-fleximod update
+</code></pre>
+<p>Please go through NCAR's <a href="https://github.com/NCAR/CTSM-Tutorial">CTSM tutorial</a> for more information on runnning CTSM.</p>
+<h3 id="installing-snakemake">Installing snakemake</h3>
+<p>Follow the steps to install snakemake <a href="https://snakemake.readthedocs.io/en/stable/getting_started/installation.html.">here</a> </p>
+<pre><code>$ conda create -c conda-forge -c bioconda -n snakemake snakemake
+</code></pre>
+<h2 id="clm-workflow-installation">clm-workflow Installation</h2>
+<p>Clone the clm-workflow repo <a href="https://github.com/amansnama/clm-workflow">https://github.com/amansnama/clm-workflow</a> to your machine.</p>
+<pre><code>$ git clone https://github.com/amansnama/clm-workflow
+</code></pre>
+<h2 id="workflow-tutorials">Workflow Tutorials</h2>
+<ul>
+<li>
+<h4 id="clm-simulation-workflow-tutorial"><a href="clm-sim-tutorial/">CLM simulation workflow tutorial</a></h4>
+</li>
+<li>
+<h4 id="analysis-workflow-tutorial"><a href="clm-analysis/">Analysis workflow tutorial</a></h4>
+</li>
+<li>
+<h4 id="combined-clm-analysis-workflow-tutorial">Combined CLM-analysis workflow tutorial</h4>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../user-guide/" class="btn btn-neutral float-right" title="User Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../user-guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
