@@ -51,6 +51,8 @@ def execute_notebook(notebook_path):
         with open(notebook_path, "r", encoding="utf-8") as f:
             notebook = read(f, as_version=4)
 
+        notebook.metadata["args"] = {'run_nbconvert': True}
+
         # Set up the preprocessor
         ep = ExecutePreprocessor(timeout=600, kernel_name="python3")
 
@@ -98,8 +100,10 @@ def main(run=True):
             # Copy the notebook to savepath to prevent overwriting
             try:
                 source = os.path.join(vars['HYDROBOOKSDIR'], notebook)
+
                 # Create parent dir if needed
                 # os.makedirs(os.path.dirname(savepath)) 
+
                 shutil.copy2(source, savepath)
                 print(f"File copied from {source} to {savepath}")
             except FileNotFoundError as err:
