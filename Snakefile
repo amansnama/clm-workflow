@@ -49,16 +49,19 @@ rule all:
         OUTROOT # Final output directory
         
     # Notify success and error via email
-    onsuccess:
-        shell("mail -s 'Snakemake DONE {CASENAME}' {EMAIL} < {log}")
-
-    onerror:
-        shell("mail -s 'Snakemake ERROR {CASENAME}' {EMAIL} < {log}")
+    shell:
+        """
+        if snakemake--report; then
+            mail -s 'Snakemake DONE {CASENAME}' {EMAIL} < {log}
+        else
+            mail -s 'Snakemake ERROR {CASENAME}' {EMAIL} < {log}
+        fi
+        """
 
 # Rule to run and submit the CLM case
 rule case_run_submit:
     input:
-        CASEROOT + '/case.submit'
+        CASEROOT + '/submit_ready'
     output:
         OUTROOT
     shell:
@@ -71,19 +74,22 @@ rule case_run_submit:
 # Rule to build the CLM case
 rule build:
     input:
-        CASEROOT + '/case.build'
+        CASEROOT + '/build_ready'
     output:
-        CASEROOT + '/case.submit'
+        CASEROOT + '/submit_ready' # intermediate submit file
     shell:
         # Builds the case
-        "./clm_scripts/Setup_Build_Case.sh {CASEROOT} --build"
+        """
+        ./clm_scripts/Setup_Build_Case.sh {CASEROOT} --build
+        touch {CASEROOT}/submit_ready
+        """
 
 # Rule to set up the CLM case
 rule setup:
     input:
         CASEROOT + '/case.setup'
     output:
-        CASEROOT + '/case.build'
+        CASEROOT + '/build_ready' # intermediate build file
     shell:
         # Apply xml configurations to the case
         # Then setups the case
@@ -91,6 +97,7 @@ rule setup:
         cd clm_scripts
         ./XMLCase.sh {CASEROOT} {XMLCONFIG}
         ./Setup_Build_Case.sh {CASEROOT} --setup
+        touch {CASEROOT}/build_ready
         """
 
 # Rule to create a new CLM case
